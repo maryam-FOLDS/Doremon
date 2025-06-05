@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&family=Satisfy&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            background-color: #000;
+        }
+
+        .interface {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        /* Interface 1: Universe Theme */
+        #interface1 {
+            background-color: #000000;
+            background-image:
+                radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 160px 120px, #ddd, rgba(0,0,0,0)),
+                linear-gradient(to bottom, #020107 0%, #0a0d3d 50%, #1c133a 100%);
+            z-index: 30;
+        }
+
+        #moon {
+            width: 100px;
+            height: 100px;
+            background-color: #f8c3d0;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #f8c3d0, 0 0 40px #f8c3d0, 0 0 60px #f8c3d0;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            z-index: 10;
+        }
+        #moon:active {
+            transform: scale(0.95);
+        }
+
+        #interface1-text {
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            color: #f0e6ef;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5), 0 0 10px #f8c3d0;
+            z-index: 10;
+        }
+
+        /* Glow Interface */
+        #glow-interface {
+            z-index: 20;
+        }
+        #glowing-moon-img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 50%;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from {
+                box-shadow: 0 0 20px #fff, 0 0 30px #f0e6ef, 0 0 40px #e1bee7;
+            }
+            to {
+                box-shadow: 0 0 30px #fff, 0 0 45px #f0e6ef, 0 0 60px #d1c4e9;
+            }
+        }
+
+        /* Interface 2: Typewriter */
+        #interface2 {
+            z-index: 10;
+        }
+
+        #photo-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://raw.githubusercontent.com/maryam-FOLDS/Doremon/main/IMG-20250603-WA0004.jpg');
+            background-size: cover;
+            background-position: center;
+            transition: filter 1s ease-in-out;
+            filter: blur(0px);
+            z-index: -1;
+        }
+        #photo-bg.blurred {
+            filter: blur(8px);
+        }
+
+        #typewriter-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 85%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        #typewriter-container.visible {
+            opacity: 1;
+        }
+
+        #typewriter-text {
+            font-family: 'Satisfy', cursive;
+            font-size: 1.6em;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            color: #f5f5f5;
+            text-align: left;
+        }
+        #typewriter-text .cursor {
+            display: inline-block;
+            animation: blink 1s step-end infinite;
+            font-family: 'Roboto', sans-serif;
+            margin-left: 3px;
+            color: #f5f5f5;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Final Popup */
+        #final-popup {
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        #final-popup-content {
+            background-color: rgba(26, 26, 46, 0.85);
+            padding: 30px 40px;
+            border-radius: 15px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 2em;
+            color: #ffc2d1;
+            text-shadow: 1px 1px 4px #000;
+            box-shadow: 0 0 30px rgba(255,194,209,0.5);
+            animation: beat 1.5s infinite;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #interface1-text { font-size: 2.5em; }
+            #typewriter-container { max-width: 90%; padding: 20px; }
+            #typewriter-text { font-size: 1.3em; line-height: 1.6; }
+            #final-popup-content { font-size: 1.5em; padding: 20px 30px; }
+        }
+         @media (max-width: 480px) {
+            #interface1-text { font-size: 2.2em; }
+            #moon { width: 80px; height: 80px; }
+            #typewriter-container { max-width: 95%; padding: 15px; }
+            #typewriter-text { font-size: 1.1em; line-height: 1.5; }
+            #final-popup-content { font-size: 1.2em; padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="interface1" class="interface">
+        <div id="moon"></div>
+        <p id="interface1-text">every beat started with you</p>
+    </div>
+
+    <div id="glow-interface" class="interface hidden">
+        <img id="glowing-moon-img" src="https://raw.githubusercontent.com/maryam-FOLDS/Doremon/main/20250604_1533_Peaceful%20Moonlit%20Slumber_remix_01jwx68xm3fjvt9mfy4mb1hr55.png" alt="Glowing Moon">
+    </div>
+
+    <div id="interface2" class="interface hidden">
+        <div id="photo-bg"></div>
+        <div id="typewriter-container">
+            <p id="typewriter-text">
+                <span id="typed-content"></span><span class="cursor">|</span>
+            </p>
+        </div>
+    </div>
+
+    <div id="final-popup" class="interface hidden">
+        <div id="final-popup-content">
+            Stronger Forever Together💗🧿
+        </div>
+    </div>
+
+    <audio id="songPlayer" src="https://github.com/maryam-FOLDS/Doremon/raw/main/Ishq%20Hai%20-%20Mismatched%20Season%203%20320%20Kbps.mp3" preload="auto"></audio>
+
+    <script>
+        // DOM Elements
+        const interface1 = document.getElementById('interface1');
+        const glowInterface = document.getElementById('glow-interface');
+        const interface2 = document.getElementById('interface2');
+        const moon = document.getElementById('moon');
+        const songPlayer = document.getElementById('songPlayer');
+        const photoBg = document.getElementById('photo-bg');
+        const typewriterContainer = document.getElementById('typewriter-container');
+        const typedContentSpan = document.getElementById('typed-content');
+        const cursorSpan = document.querySelector('#typewriter-text .cursor');
+        const finalPopup = document.getElementById('final-popup');
+
+        // Timings and Settings
+        const GLOW_DURATION = 2000; // 2 seconds
+        const PHOTO_VIEW_DURATION = 3000; // 3 seconds
+        const TYPEWRITER_SPEED = 65;
+        const POST_TYPEWRITER_DELAY = 1500;
+        const SONG_START_TIME = 40; // Start song from 40 seconds in
+
+        // The Message
+        const fullText = `Happy birthday to the most wonderful man I know..!!!♥️🦋 you are my love, my reason to smile, my lover, my today tomorrow & always, my happy place , my favourite human , my rock, my heart & soul, my one & only , my whole 🌍 , my everything 🤍💎 To many more memories with you🫀🥂\n\nI love you so much….💎🦋 I hope this year brings you more happiness & success you deserve 🧿 you have filled my life with so much love & joy, and I am so thankful for every moment we shared together every memory we made together… so once again happy birthday to the beat of my heart my prince you will be forever in my heart ♥️🫀💎🦋♥️🌈🧿🥂`;
+
+        // Event listener for the moon click
+        moon.addEventListener('click', () => {
+            // 1. Hide Interface 1, Show Glow Interface
+            interface1.style.opacity = '0';
+            glowInterface.classList.remove('hidden');
+            setTimeout(() => interface1.classList.add('hidden'), 500);
+
+            // 2. Play song from 40 seconds
+            songPlayer.currentTime = SONG_START_TIME;
+            songPlayer.play().catch(error => {
+                console.error("Audio play failed. User interaction might be required.", error);
+                // On some browsers, audio can only play after direct user interaction.
+                // This click should be enough, but this is a good fallback log.
+            });
+
+            // 3. After 2 seconds, transition to Interface 2
+            setTimeout(() => {
+                glowInterface.style.opacity = '0';
+                interface2.classList.remove('hidden');
+                setTimeout(() => glowInterface.classList.add('hidden'), 500);
+
+                // 4. After 3 seconds, blur photo and start typing
+                setTimeout(() => {
+                    photoBg.classList.add('blurred');
+                    typewriterContainer.classList.add('visible');
+                    startTypewriter();
+                }, PHOTO_VIEW_DURATION);
+
+            }, GLOW_DURATION);
+        });
+
+        function startTypewriter() {
+            let i = 0;
+            typedContentSpan.innerHTML = "";
+            if (cursorSpan) cursorSpan.style.display = 'inline-block';
+
+            function type() {
+                if (i < fullText.length) {
+                    // Use innerHTML to correctly render emojis and line breaks (\n)
+                    typedContentSpan.innerHTML = fullText.substring(0, i + 1).replace(/\n/g, '<br>');
+                    i++;
+                    setTimeout(type, TYPEWRITER_SPEED);
+                } else {
+                    // Typing finished
+                    if (cursorSpan) cursorSpan.style.display = 'none';
+                    setTimeout(() => {
+                        finalPopup.classList.remove('hidden');
+                    }, POST_TYPEWRITER_DELAY);
+                }
+            }
+            type();
+        }
+    </script>
+
+</body>
+</html>
